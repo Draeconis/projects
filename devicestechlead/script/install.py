@@ -1,9 +1,4 @@
-import ssl
-import sys
-import os, platform
-import urllib.request
-import tempfile
-import subprocess
+import ssl, sys, os, platform, urllib.request, tempfile, subprocess
 from pathlib import Path
 from zipfile import ZipFile
 
@@ -32,6 +27,9 @@ elif (os == "Windows"):
     else:
         url = 'https://dl.google.com/dl/chrome/install/GoogleChromeEnterpriseBundle.zip'
 
+# get the filesize of the file were about to download
+remoteFileSize = print(urllib.request.urlopen(url).length)
+
 # create a temp directory, removed once this script moves past the 'with' which creates it.
 # on windows, this will be %appdata%\local\Temp\[random]\
 # on macOS, this will be the DARWIN_USER_TEMP_DIR/[random]/
@@ -39,10 +37,15 @@ with tempfile.TemporaryDirectory() as directory:
     filePath = Path(directory + '/' + installer)
     print("DEBUG: filePath is " + str(filePath))
 
+    # spawn electron, pass it args
+     subprocess.call([Electron])
+
     # download the file to the temp dir
     with urllib.request.urlopen(url) as response, open(filePath, 'wb') as out_file:
         data = response.read()
         out_file.write(data)
+
+    # Electron should change its view to say installing..
 
     # perform the installation
     if (os == "Darwin"):
