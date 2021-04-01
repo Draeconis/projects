@@ -1,4 +1,5 @@
 import ssl
+import sys
 import os, platform
 import urllib.request
 import subprocess
@@ -8,22 +9,23 @@ os = platform.system()
 ssl._create_default_https_context = ssl._create_unverified_context
 
 if (os == "Darwin"):
-    pkgfile = ("GoogleChrome.pkg")
+    installer = "GoogleChrome.pkg"
     arch = subprocess.getoutput('/usr/bin/uname -p')
     tmp = ('/tmp/')
-    filePath = Path(tmp + pkgfile)
     if (arch == "i386") or (arch == "x86_64"):
         url = 'https://dl.google.com/chrome/mac/stable/gcem/GoogleChrome.pkg'
     elif (arch == "arm"):
         url = 'https://dl.google.com/dl/chrome/mac/universal/stable/gcem/GoogleChrome.pkg'
-elif (os == "win32"):
-    tmp = (C:\temp)
-    url = ''
-elif (os == 'win64'):
-    tmp = (C:\temp)
-    url = ''
+elif (os == "Windows"):
+    installer = "GoogleChromeEnterpriseBundle.zip"
+    is_64bits = sys.maxsize > 2**32
+    tmp = ('C:/temp/')
+    if ( is_64bits == True ):
+        url = 'https://dl.google.com/dl/chrome/install/GoogleChromeEnterpriseBundle64.zip'
+    else:
+        url = 'https://dl.google.com/dl/chrome/install/GoogleChromeEnterpriseBundle.zip'
 
-
-with urllib.request.urlopen(url) as response, open(filePath, 'wb') as out_file:
+filePath = Path(tmp + installer)
+with urllib.request.urlopen(url) as response, open(installer, 'wb') as out_file:
     data = response.read()
     out_file.write(data)
