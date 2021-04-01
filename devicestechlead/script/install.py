@@ -1,18 +1,18 @@
+import ssl
 import os, platform
 import urllib.request
 import subprocess
 from pathlib import Path
 
 os = platform.system()
+ssl._create_default_https_context = ssl._create_unverified_context
 
 if (os == "Darwin"):
     pkgfile = ("GoogleChrome.pkg")
     arch = subprocess.getoutput('/usr/bin/uname -p')
     tmp = ('/tmp/')
-    filePath = (tmp + pkgfile)
-    if (arch == "i386"):
-        url = 'https://dl.google.com/chrome/mac/stable/gcem/GoogleChrome.pkg'
-    elif (arch == "x86_64"):
+    filePath = Path(tmp + pkgfile)
+    if (arch == "i386") or (arch == "x86_64"):
         url = 'https://dl.google.com/chrome/mac/stable/gcem/GoogleChrome.pkg'
     elif (arch == "arm"):
         url = 'https://dl.google.com/dl/chrome/mac/universal/stable/gcem/GoogleChrome.pkg'
@@ -24,4 +24,6 @@ elif (os == 'win64'):
     url = ''
 
 
-urllib.request.urlretrieve(url, filePath)
+with urllib.request.urlopen(url) as response, open(filePath, 'wb') as out_file:
+    data = response.read()
+    out_file.write(data)
