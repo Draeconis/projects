@@ -12,6 +12,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 # set $url based on os/arch
 if (os == "Darwin"):
+    electronApp = Path('/Users/geofsmi1/Documents/GitHub/Electron.app/Contents/MacOS/Electron')
     print("DEBUG: os is " + os)
     installer = "GoogleChrome.pkg"
     arch = subprocess.getoutput('/usr/bin/uname -p')
