@@ -4,6 +4,9 @@ from zipfile import ZipFile
 
 os = platform.system()
 
+# Turns Electron UI on or off. If 'False', we'll just install Chrome.
+ui_enabled = True
+
 # fix an issue downloading from an https share
 ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -37,8 +40,11 @@ with tempfile.TemporaryDirectory() as directory:
     filePath = Path(directory + '/' + installer)
     print("DEBUG: filePath is " + str(filePath))
 
+    # spawn Electron, open main page
+    action = subprocess.call([Electron view="main"])
+
     # spawn electron, pass it args
-     subprocess.call([Electron])
+     subprocess.call([Electron view="download" download=filePath size=remoteFileSize])
 
     # download the file to the temp dir
     with urllib.request.urlopen(url) as response, open(filePath, 'wb') as out_file:
