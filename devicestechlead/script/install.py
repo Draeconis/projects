@@ -50,7 +50,7 @@ with tempfile.TemporaryDirectory() as directory:
         # spawn electron,open download page
         path = "'path=" + str(filePath) + "'"
         size = "size=" + str(remoteFileSize)
-        subprocess.run([electronApp, 'view=download', path, size])
+        subprocess.Popen([electronApp, 'view=download', path, size])
 
     # # download the file to the temp dir
     # with urllib.request.urlopen(url) as response, open(filePath, 'wb') as out_file:
