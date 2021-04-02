@@ -20,4 +20,4 @@ Start-Sleep -s 10
 Write-Host "Deleting $exeFile"
 Remove-Item $exeFilePath
 
-# exit
+exit
