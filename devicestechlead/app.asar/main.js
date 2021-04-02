@@ -70,20 +70,23 @@ ipcMain.handle('start', () => {
     process.exit(0);
 });
 
-// ipcMain.handle('watch-progress', () => {
-//     const fileMax = (global.passedargs['size']);
-//     var dlfile = document.getElementById((global.passedargs['path']));
-//     if (dlfile.length > 0) {
-//       const dlfilesizecheck = setInterval(function(){
-//         const dlfilesize =
-//         if (dlfilesize != fileMax) {
-//           percentage = Math.ceil(dlfilesize / fileMax * 100)
-//           return percentage;
-//         } else {
-//           clearInterval(dlfilesizecheck);
-//         }
-//           stuff
-//         }
-//       }, 500 );
-//     }
-// });
+ipcMain.handle('watch-progress', () => {
+    // const dlfile = (global.passedargs['path']);
+    const fileMax = (global.passedargs['size']);
+    // outputConsole.log(fileMax);
+    return fileMax;
+
+    // if (dlfile.length > 0) {
+    //   const dlfilesizecheck = setInterval(function(){
+    //     const dlfilesize =
+    //     if (dlfilesize != fileMax) {
+    //       percentage = Math.ceil(dlfilesize / fileMax * 100)
+    //       return percentage;
+    //     } else {
+    //       clearInterval(dlfilesizecheck);
+    //     }
+    //       stuff
+    //     }
+    //   }, 500 );
+    // }
+});
