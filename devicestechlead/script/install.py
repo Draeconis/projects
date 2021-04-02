@@ -21,6 +21,7 @@ if (os == "Darwin"):
     elif (arch == "arm"):
         url = 'https://dl.google.com/dl/chrome/mac/universal/stable/gcem/GoogleChrome.pkg'
 elif (os == "Windows"):
+    electronApp = Path('C:/Users/geoff/Documents/electron/dist/electron.exe')
     print("DEBUG: os is " + os)
     installer = "GoogleChromeEnterpriseBundle.zip"
     is_64bits = sys.maxsize > 2**32
@@ -31,33 +32,35 @@ elif (os == "Windows"):
         url = 'https://dl.google.com/dl/chrome/install/GoogleChromeEnterpriseBundle.zip'
 
 # get the filesize of the file were about to download
-remoteFileSize = print(urllib.request.urlopen(url).length)
+remoteFileSize = urllib.request.urlopen(url).length
 
 # create a temp directory, removed once this script moves past the 'with' which creates it.
 # on windows, this will be %appdata%\local\Temp\[random]\
 # on macOS, this will be the DARWIN_USER_TEMP_DIR/[random]/
 with tempfile.TemporaryDirectory() as directory:
     filePath = Path(directory + '/' + installer)
-    print("DEBUG: filePath is " + str(filePath))
+    # print("DEBUG: filePath is " + str(filePath))
 
     if (ui_enabled == True):
         # spawn Electron, open main page
-        action = subprocess.call(['Electron', 'view=main'])
+        action = subprocess.run([electronApp, 'view=main'], capture_output=True, text=True).stdout.strip("\n")
         if (action != "start"):
             exit()
 
-        # spawn electron, pass it args
-        subprocess.call(['Electron', 'view=download', 'path=' + filePath, 'size=' + remoteFileSize])
+        # spawn electron,open download page
+        path = "'path=" + str(filePath) + "'"
+        size = "size=" + str(remoteFileSize)
+        subprocess.run([electronApp, 'view=download', path, size])
 
-    # download the file to the temp dir
-    with urllib.request.urlopen(url) as response, open(filePath, 'wb') as out_file:
-        data = response.read()
-        out_file.write(data)
-
-    # Electron should change its view to say installing..
-
-    # perform the installation
-    if (os == "Darwin"):
-        stuff
-    elif (os == "Windows"):
-        ZipFile(filePath).extractall(directory)
+    # # download the file to the temp dir
+    # with urllib.request.urlopen(url) as response, open(filePath, 'wb') as out_file:
+    #     data = response.read()
+    #     out_file.write(data)
+    #
+    # # Electron should change its view to say installing..
+    #
+    # # perform the installation
+    # if (os == "Darwin"):
+    #     stuff
+    # elif (os == "Windows"):
+    #     ZipFile(filePath).extractall(directory)
