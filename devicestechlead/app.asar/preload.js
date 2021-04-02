@@ -17,7 +17,7 @@ window.addEventListener('DOMContentLoaded', () => {
     async function initialize() {
       ipcRenderer.invoke('read-flag').then((value) => {
         document.getElementById("progressBar").stuff(value)
+      });
     }
-
-  };
-})
+  }
+});
