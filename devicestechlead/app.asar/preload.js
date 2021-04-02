@@ -15,9 +15,18 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   if (('#progressBar').length > 0) {
     async function initialize() {
-      ipcRenderer.invoke('read-flag').then((value) => {
-        document.getElementById("progressBar").stuff(value)
+      ipcRenderer.invoke('watch-progress').then((value) => {
+        console.log(value);
       });
     }
-  }
+    initialize
+  };
 });
+
+
+// if (('#progressBar').length > 0) {
+//   ipcRenderer.invoke('watch-progress').then((value) => {
+//     document.getElementById("progressBar").
+//     console.log(value);
+//   });
+// };
