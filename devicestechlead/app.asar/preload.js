@@ -13,4 +13,11 @@ window.addEventListener('DOMContentLoaded', () => {
         ipcRenderer.invoke('start');
     });
   };
+  if (('#progressBar').length > 0) {
+    async function initialize() {
+      ipcRenderer.invoke('read-flag').then((value) => {
+        document.getElementById("progressBar").stuff(value)
+    }
+
+  };
 })
