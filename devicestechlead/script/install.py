@@ -40,11 +40,14 @@ with tempfile.TemporaryDirectory() as directory:
     filePath = Path(directory + '/' + installer)
     print("DEBUG: filePath is " + str(filePath))
 
-    # spawn Electron, open main page
-    action = subprocess.call([Electron view="main"])
+    if (ui_enabled == True):
+        # spawn Electron, open main page
+        action = subprocess.call(['Electron', 'view=main'])
+        if (action != "start"):
+            exit()
 
-    # spawn electron, pass it args
-     subprocess.call([Electron view="download" download=filePath size=remoteFileSize])
+        # spawn electron, pass it args
+        subprocess.call(['Electron', 'view=download', 'path=' + filePath, 'size=' + remoteFileSize])
 
     # download the file to the temp dir
     with urllib.request.urlopen(url) as response, open(filePath, 'wb') as out_file:
