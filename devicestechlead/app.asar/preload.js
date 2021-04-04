@@ -14,12 +14,8 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   };
   if (('#progressBar').length > 0) {
-    async function initialize() {
-      ipcRenderer.invoke('watch-progress').then((value) => {
-        console.log(value);
-      });
-    }
-    initialize
+    ipcRenderer.invoke('download-progress');
+    });
   };
 });
 

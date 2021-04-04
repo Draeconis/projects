@@ -48,17 +48,19 @@ with tempfile.TemporaryDirectory() as directory:
         if (action != "start"):
             exit()
 
-        # spawn electron,open download page
-        path = "'path='" + str(filePath) + "''"
+        # spawn electron,open download page, download file and monitor progress
+        inputpath = "'inputpath='" + url +"''"
+        outputpath = "'outputpath='" + str(filePath) + "''"
         size = "size=" + str(remoteFileSize)
-        subprocess.Popen([electronApp, 'view=download', path, size])
-        print("DEBUG: pathval is "+ path)
-        print("DEBUG: sizeval is " + size)
-
-    # # download the file to the temp dir
-    # with urllib.request.urlopen(url) as response, open(filePath, 'wb') as out_file:
-    #     data = response.read()
-    #     out_file.write(data)
+        subprocess.Popen([electronApp, 'view=download', inputpath, outputpath, size])
+        print(inputpath)
+        print(outputpath)
+        print(size)
+    else:
+        # download the file quietly to the temp dir, as UI is disabled.
+        with urllib.request.urlopen(url) as response, open(filePath, 'wb') as out_file:
+            data = response.read()
+            out_file.write(data)
     #
     # # Electron should change its view to say installing..
     #
