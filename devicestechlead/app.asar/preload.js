@@ -14,23 +14,15 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     };
     if (('#progressBar').length > 0) {
-        const dlfilesizecheck = setInterval(function(){
-            ipcRenderer.invoke('download-progress').then((value) => {
-            });
-          } else {
-            clearInterval(dlfilesizecheck);
-        }
-        }, 500 );
-      }
-
-  };
+        initialize
+    }
 });
 
 async function initialize() {
     const dlfilesizecheck = setInterval(function(){
         ipcRenderer.invoke('download-progress').then((value) => {
             if ((value).length > 0) {
-                document.getElementById("progressBar").dosomething(val)
+                document.getElementById("progressBar").innerHTML = "<div class=\"progress-bar w-75\" role=\"progressbar\" aria-valuenow=\"75\" aria-valuemin=\"0\" aria-valuemax=\"100\">75%</div>"
             } else {
                 clearInterval(dlfilesizecheck)
             }
