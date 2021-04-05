@@ -9,6 +9,8 @@ hostname = gethostname()
 
 scriptName = "Google Chrome Installer"
 scriptVersion = "1.2"
+arch = ""
+is_64bits = ""
 
 # Turns Electron UI on or off. If 'False', we'll just install Chrome.
 ui_enabled = True
@@ -20,10 +22,8 @@ ssl._create_default_https_context = ssl._create_unverified_context
 if (os == "Darwin"):
     electronApp = Path('/Users/geofsmi1/Documents/GitHub/Electron.app/Contents/MacOS/Electron')
     installer = Path('/usr/sbin/installer')
-    print("DEBUG: os is " + os)
     installer = "GoogleChrome.pkg"
     arch = subprocess.getoutput('/usr/bin/uname -p')
-    print("DEBUG: arch is " + arch)
     logfile = Path('/var/log/company.log')
     if (arch == "i386") or (arch == "x86_64"):
         url = 'https://dl.google.com/chrome/mac/stable/gcem/GoogleChrome.pkg'
@@ -32,7 +32,6 @@ if (os == "Darwin"):
 elif (os == "Windows"):
     electronApp = Path('C:/Users/geoff/Documents/electron/dist/electron.exe')
     msiexec = Path('C:/Windows/System32/msiexec.exe')
-    print("DEBUG: os is " + os)
     installer = "GoogleChromeEnterpriseBundle.zip"
     logfile = Path('C:/Windows/System32/winevt/Logs/company.log')
     is_64bits = sys.maxsize > 2**32
@@ -58,10 +57,10 @@ def log(level, msg):
         logging.critical(msg)
 
 log('info', 'os is ' + os)
-if (arch != "")
+if (arch != ""):
     log('info', 'arch is ' + arch)
-if (is_64bits != "")
-    log('info', 'os is 64bit: ' + is_64bits)
+if (is_64bits != ""):
+    log('info', 'os is 64bit: ' + str(is_64bits))
 
 log('debug', 'url is ' + url)
 
@@ -73,7 +72,7 @@ log('debug', 'url is ' + url)
 # on macOS, this will be the DARWIN_USER_TEMP_DIR/[random]/
 with tempfile.TemporaryDirectory() as directory:
     filePath = Path(directory + '/' + installer)
-    log('debug', 'filePath is ' + filePath)
+    log('debug', 'filePath is ' + str(filePath))
 
     if (ui_enabled == True):
         # spawn Electron, open main page
@@ -110,17 +109,17 @@ with tempfile.TemporaryDirectory() as directory:
     # perform the installation
     log('info', 'installing Chrome')
     if (os == "Darwin"):
-        log('debug', 'installing ' + filePath)
+        log('debug', 'installing ' + str(filePath))
         subprocess.run([installer, '-pkg', filePath, '-target', '/'])
     elif (os == "Windows"):
-        log('debug', 'unzipping ' + filePath " to " + directory)
+        log('debug', 'unzipping ' + str(filePath) + ' to ' + str(directory))
         ZipFile(filePath).extractall(directory)
-        installPath = Path(directory + '/Installers')
+        installPath = Path(str(directory) + '/Installers')
         if ( is_64bits == True ):
-            installMSI = Path(installPath + '/GoogleChromeStandaloneEnterprise64.msi')
+            installMSI = Path(str(installPath) + '/GoogleChromeStandaloneEnterprise64.msi')
         else:
-            installMSI = Path(installPath + '/GoogleChromeStandaloneEnterprise.msi')
-        log('debug', 'installing ' + installMSI)
+            installMSI = Path(str(installPath) + '/GoogleChromeStandaloneEnterprise.msi')
+        log('debug', 'installing ' + str(installMSI))
         subprocess.run([msiexec, '/i', installMSI, '/qn', '/norestart'])
 
     # electron prompt that install is complete
@@ -130,5 +129,5 @@ with tempfile.TemporaryDirectory() as directory:
         postInstallAction = subprocess.Popen([electronApp, 'view=postinstall'])
         sleep(10)
         postInstallAction.terminate()
-
+        log('info', 'done!')
 exit()
