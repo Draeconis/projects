@@ -30,7 +30,7 @@ if (os == "Darwin"):
     elif (arch == "arm"):
         url = 'https://dl.google.com/dl/chrome/mac/universal/stable/gcem/GoogleChrome.pkg'
 elif (os == "Windows"):
-    electronApp = Path('C:/Users/geoff/Documents/electron/dist/electron.exe')
+    electronApp = Path('electron.exe')
     msiexec = Path('C:/Windows/System32/msiexec.exe')
     download = "GoogleChromeEnterpriseBundle.zip"
     logfile = Path('C:/Windows/System32/winevt/Logs/company.log')
