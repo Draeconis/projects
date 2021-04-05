@@ -22,5 +22,8 @@
     "electron": "^12.0.2",
     "jquery": "^3.6.0",
     "popper.js": "^1.16.1"
+  },
+  "dependencies": {
+    "electron-progressbar": "^2.0.0"
   }
 }

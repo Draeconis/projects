@@ -33,7 +33,7 @@ elif (os == "Windows"):
         url = 'https://dl.google.com/dl/chrome/install/GoogleChromeEnterpriseBundle.zip'
 
 # get the filesize of the file were about to download
-remoteFileSize = urllib.request.urlopen(url).length
+# remoteFileSize = urllib.request.urlopen(url).length
 
 # create a temp directory, removed once this script moves past the 'with' which creates it.
 # on windows, this will be %appdata%\local\Temp\[random]\
@@ -44,28 +44,32 @@ with tempfile.TemporaryDirectory() as directory:
 
     if (ui_enabled == True):
         # spawn Electron, open main page
-        action = subprocess.run([electronApp, 'view=main'], capture_output=True, text=True).stdout.strip("\n")
-        if (action != "start"):
+        startAction = subprocess.run([electronApp, '--inpsect=5858', 'view=main'], capture_output=True, text=True).stdout.strip("\n")
+        if (startAction != "start"):
             exit()
+
+        downloadAction = subprocess.Popen([electronApp, 'view=download'])
 
         # spawn electron,open download page, download file and monitor progress
         # inputpath = "'inputpath=\"" + url + "\"'"
-        outputpath = "'outputpath=\"" + str(filePath) + "\"'"
-        size = "size=" + str(remoteFileSize)
-        subprocess.Popen([electronApp, 'view=download', outputpath, size])
+        # outputpath = "'outputpath=\"" + str(filePath) + "\"'"
+        # size = "'size=" + str(remoteFileSize) + "'"
+        # subprocess.Popen([electronApp, 'view=download', outputpath, size])
         # print(inputpath)
-        print(outputpath)
-        print(size)
+        # print(outputpath)
+        # print(size)
 
     # download the file quietly to the temp dir
     with urllib.request.urlopen(url) as response, open(filePath, 'wb') as out_file:
         data = response.read()
         out_file.write(data)
-    #
-    # # Electron should change its view to say installing..
-    #
-    # # perform the installation
-    # if (os == "Darwin"):
-    #     stuff
-    # elif (os == "Windows"):
-    #     ZipFile(filePath).extractall(directory)
+
+    if (ui_enabled == True):
+        downloadAction.terminate()
+        installAction = subprocess.Popen([electronApp, 'view=install'])
+
+    # perform the installation
+    if (os == "Darwin"):
+        
+    elif (os == "Windows"):
+        ZipFile(filePath).extractall(directory)

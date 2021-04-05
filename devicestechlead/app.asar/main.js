@@ -5,6 +5,7 @@ const { ipcMain } = require('electron');
 var nodeConsole = require('console');
 var outputConsole = new nodeConsole.Console(process.stdout, process.stderr);
 const fs = require("fs");
+// const ProgressBar = require('electron-progressbar');
 
 const argv = process.argv.slice(1);
 function createWindow () {
@@ -31,13 +32,19 @@ if (global.passedargs['view'] == "main"){
     mainWindow.loadFile('index.html')
 } else if (global.passedargs['view'] == "download"){
     mainWindow.loadFile('download.html')
+} else if (global.passedargs['view'] == "install"){
+    mainWindow.loadFile('install.html')
 } else {
   app.quit()
 }
 
+
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 }
+
+// const targetFile = global.passedargs['outputpath'];
+// var length = global.passedargs['size'];
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -71,21 +78,24 @@ ipcMain.handle('start', () => {
     process.exit(0);
 });
 
-ipcMain.handle('download-progress', () => {
-    // const sourceUrl = global.passedargs['inputpath'];
-    const targetFile = global.passedargs['outputpath'];
-    var length = global.passedargs['size'];
-    outputConsole.log('download');
-    fs.stat(targetFile, (err, fileStats) => {
-        if (err) {
-            console.log(err)
-        } else {
-            if (fileStats != length) {
-                percentage = Math.ceil(fileStats / length * 100)
-                return percentage;
-            } else {
-                process.exit(0);
-            }
-        }
-    })
-});
+// ipcMain.handle('download-progress', () => {
+//     // const sourceUrl = global.passedargs['inputpath'];
+//     const targetFile = global.passedargs['outputpath'];
+//     var length = global.passedargs['size'];
+//
+//     fs.stat(targetFile, (err, fileStats) => {
+//         if (err) {
+//             console.log(err)
+//         } else {
+//             var currentSize = fileStats.size
+//             if (currentSize != length) {
+//                 var percentage = Math.ceil(currentSize / length * 100)
+//                 // outputConsole.log('exit for some reason');
+//                 return percentage;
+//             } else {
+//                 outputConsole.log('exit for some reason');
+//                 // process.exit(0);
+//             }
+//         }
+//     })
+// });
