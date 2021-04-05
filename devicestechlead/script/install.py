@@ -70,6 +70,10 @@ with tempfile.TemporaryDirectory() as directory:
 
     # perform the installation
     if (os == "Darwin"):
-        
+        subprocess.run(['/usr/sbin/installer', '-pkg', filePath, '-target', '/'])
     elif (os == "Windows"):
         ZipFile(filePath).extractall(directory)
+
+    if (ui_enabled == True):
+        installAction.terminate()
+        postInstallAction = subprocess.Popen([electronApp, 'view=postinstall'])
