@@ -3,8 +3,11 @@
   <head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+
+<!-- <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-6PH54BfkNq/EMMhUY7nhHf3c+AxloOwfy7hWyT01CM8='; style-src 'self'; img-src 'self'; connect-src 'self'" /> -->
+
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
+    <!-- <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
@@ -23,9 +26,9 @@
       <p class="text-center">Please wait for the download to finish.</p>
     </div>
 
-    <div class="progress">
-      <span id="progressBar"><div class="progress-bar w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div></span>
-    </div>
+    <div class="progress" id="progressBar">
+      <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+    </div>>
 
     <!-- You can also require other files to run in this process -->
     <script src="./renderer.js"></script>

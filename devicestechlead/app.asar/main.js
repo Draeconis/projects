@@ -75,13 +75,13 @@ ipcMain.handle('download-progress', () => {
     // const sourceUrl = global.passedargs['inputpath'];
     const targetFile = global.passedargs['outputpath'];
     var length = global.passedargs['size'];
-
+    outputConsole.log('download');
     fs.stat(targetFile, (err, fileStats) => {
         if (err) {
             console.log(err)
         } else {
-            if (fileStats != fileMax) {
-                percentage = Math.ceil(dlfilesize / fileMax * 100)
+            if (fileStats != length) {
+                percentage = Math.ceil(fileStats / length * 100)
                 return percentage;
             } else {
                 process.exit(0);

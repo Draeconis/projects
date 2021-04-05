@@ -3,6 +3,17 @@
 const { ipcRenderer } = require('electron');
 
 window.addEventListener('DOMContentLoaded', () => {
+    async function initialize() {
+        const dlfilesizecheck = setInterval(function(){
+            ipcRenderer.invoke('download-progress').then((value) => {
+                if ((value).length > 0) {
+                    document.getElementById("progressBar").innerHTML = '<div class="progress-bar" role="progressbar" style="width: ' + value + '%;" aria-valuenow="' + value + '" aria-valuemin="0" aria-valuemax="100">' + value + '%</div>'
+                } else {
+                    clearInterval(dlfilesizecheck)
+                }
+            });
+        }, 500 );
+    }
     if (('#exitBtn').length > 0) {
         document.getElementById("exitBtn").addEventListener("click", (e) => {
             ipcRenderer.invoke('quit-app');
@@ -18,19 +29,9 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-async function initialize() {
-    const dlfilesizecheck = setInterval(function(){
-        ipcRenderer.invoke('download-progress').then((value) => {
-            if ((value).length > 0) {
-                document.getElementById("progressBar").innerHTML = "<div class=\"progress-bar w-75\" role=\"progressbar\" aria-valuenow=\"75\" aria-valuemin=\"0\" aria-valuemax=\"100\">75%</div>"
-            } else {
-                clearInterval(dlfilesizecheck)
-            }
-        });
-    }, 500 );
-}
 
-initialize
+
+// initialize
 
 // function createFileDLCheckLoop() {
 //     const deferTimer = setInterval(function(){
