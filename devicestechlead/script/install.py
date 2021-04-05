@@ -13,6 +13,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 # set $url based on os/arch
 if (os == "Darwin"):
     electronApp = Path('/Users/geofsmi1/Documents/GitHub/Electron.app/Contents/MacOS/Electron')
+    installer = Path('/usr/sbin/installer')
     print("DEBUG: os is " + os)
     installer = "GoogleChrome.pkg"
     arch = subprocess.getoutput('/usr/bin/uname -p')
@@ -23,6 +24,7 @@ if (os == "Darwin"):
         url = 'https://dl.google.com/dl/chrome/mac/universal/stable/gcem/GoogleChrome.pkg'
 elif (os == "Windows"):
     electronApp = Path('C:/Users/geoff/Documents/electron/dist/electron.exe')
+    msiexec = Path('C:/Windows/System32/msiexec.exe')
     print("DEBUG: os is " + os)
     installer = "GoogleChromeEnterpriseBundle.zip"
     is_64bits = sys.maxsize > 2**32
@@ -70,10 +72,21 @@ with tempfile.TemporaryDirectory() as directory:
 
     # perform the installation
     if (os == "Darwin"):
-        subprocess.run(['/usr/sbin/installer', '-pkg', filePath, '-target', '/'])
+        subprocess.run([installer, '-pkg', filePath, '-target', '/'])
     elif (os == "Windows"):
         ZipFile(filePath).extractall(directory)
+        installPath = Path(directory + '/Installers')
+        if ( is_64bits == True ):
+            installMSI = Path(installPath + 'GoogleChromeStandaloneEnterprise64.msi')
+        else:
+            installMSI = Path(installPath + 'GoogleChromeStandaloneEnterprise.msi')
+        subprocess.run([msiexec, '/i', installMSI, '/qn', '/norestart'])
 
+    # electron prompt that install is complete
     if (ui_enabled == True):
         installAction.terminate()
         postInstallAction = subprocess.Popen([electronApp, 'view=postinstall'])
+        # pause here
+        postInstallAction.terminate()
+
+exit()

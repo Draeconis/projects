@@ -34,6 +34,8 @@ if (global.passedargs['view'] == "main"){
     mainWindow.loadFile('download.html')
 } else if (global.passedargs['view'] == "install"){
     mainWindow.loadFile('install.html')
+} else if (global.passedargs['view'] == "postinstall"){
+    mainWindow.loadFile('postinstall.html')
 } else {
   app.quit()
 }
