@@ -13,3 +13,4 @@ default_app/package.json
 default_app/preload.js
 default_app/styles.css
 devicestechlead/script/Electron
+devicestechlead/.DS_Store
