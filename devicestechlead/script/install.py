@@ -7,7 +7,7 @@ from socket import gethostname
 os = platform.system()
 hostname = gethostname()
 
-scriptName = "Google Chrome Installer"
+scriptName = "GoogleChromeInstaller"
 scriptVersion = "1.2"
 arch = ""
 is_64bits = ""
@@ -22,7 +22,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 if (os == "Darwin"):
     electronApp = Path('/Users/geofsmi1/Documents/GitHub/Electron.app/Contents/MacOS/Electron')
     installer = Path('/usr/sbin/installer')
-    installer = "GoogleChrome.pkg"
+    download = "GoogleChrome.pkg"
     arch = subprocess.getoutput('/usr/bin/uname -p')
     logfile = Path('/var/log/company.log')
     if (arch == "i386") or (arch == "x86_64"):
@@ -32,7 +32,7 @@ if (os == "Darwin"):
 elif (os == "Windows"):
     electronApp = Path('C:/Users/geoff/Documents/electron/dist/electron.exe')
     msiexec = Path('C:/Windows/System32/msiexec.exe')
-    installer = "GoogleChromeEnterpriseBundle.zip"
+    download = "GoogleChromeEnterpriseBundle.zip"
     logfile = Path('C:/Windows/System32/winevt/Logs/company.log')
     is_64bits = sys.maxsize > 2**32
     print("DEBUG: is 64bit? " + str(is_64bits))
@@ -56,6 +56,7 @@ def log(level, msg):
     elif (level == "critical"):
         logging.critical(msg)
 
+log('info', '*** log start')
 log('info', 'os is ' + os)
 if (arch != ""):
     log('info', 'arch is ' + arch)
@@ -69,9 +70,9 @@ log('debug', 'url is ' + url)
 
 # create a temp directory, removed once this script moves past the 'with' which creates it.
 # on windows, this will be %appdata%\local\Temp\[random]\
-# on macOS, this will be the DARWIN_USER_TEMP_DIR/[random]/
+# on macOS, this will be the DARWIN_USER_TEMP_DIR/[random]/.. or sometimes /tmp/[random]/
 with tempfile.TemporaryDirectory() as directory:
-    filePath = Path(directory + '/' + installer)
+    filePath = Path(directory + '/' + download)
     log('debug', 'filePath is ' + str(filePath))
 
     if (ui_enabled == True):
