@@ -4,11 +4,11 @@ from zipfile import ZipFile
 from time import sleep
 from socket import gethostname
 
-os = platform.system()
+clientos = platform.system()
 hostname = gethostname()
 
 scriptName = "GoogleChromeInstaller"
-scriptVersion = "1.2"
+scriptVersion = "1.3"
 arch = ""
 is_64bits = ""
 
@@ -19,8 +19,9 @@ ui_enabled = True
 ssl._create_default_https_context = ssl._create_unverified_context
 
 # set $url based on os/arch
-if (os == "Darwin"):
-    electronApp = Path('../MacOS/Electron')
+if (clientos == "Darwin"):
+    currentDir = Path(__file__).parent.absolute()
+    electronApp = Path(str(currentDir) + '/Electron')
     installer = Path('/usr/sbin/installer')
     download = "GoogleChrome.pkg"
     arch = subprocess.getoutput('/usr/bin/uname -p')
@@ -29,7 +30,7 @@ if (os == "Darwin"):
         url = 'https://dl.google.com/chrome/mac/stable/gcem/GoogleChrome.pkg'
     elif (arch == "arm"):
         url = 'https://dl.google.com/dl/chrome/mac/universal/stable/gcem/GoogleChrome.pkg'
-elif (os == "Windows"):
+elif (clientos == "Windows"):
     electronApp = Path('electron.exe')
     msiexec = Path('C:/Windows/System32/msiexec.exe')
     download = "GoogleChromeEnterpriseBundle.zip"
@@ -57,11 +58,11 @@ def log(level, msg):
         logging.critical(msg)
 
 log('info', '*** log start')
-log('info', 'os is ' + os)
+log('info', 'clientos is ' + clientos)
 if (arch != ""):
     log('info', 'arch is ' + arch)
 if (is_64bits != ""):
-    log('info', 'os is 64bit: ' + str(is_64bits))
+    log('info', 'clientos is 64bit: ' + str(is_64bits))
 
 log('debug', 'url is ' + url)
 
@@ -78,7 +79,7 @@ with tempfile.TemporaryDirectory() as directory:
     if (ui_enabled == True):
         # spawn Electron, open main page
         log('info', 'launching electron, startAction')
-        startAction = subprocess.run([electronApp, '--inpsect=5858', 'view=main'], capture_output=True, text=True).stdout.strip("\n")
+        startAction = subprocess.run([electronApp, 'view=main'], capture_output=True, text=True).stdout.strip("\n")
         if (startAction != "start"):
             exit()
 
@@ -109,10 +110,10 @@ with tempfile.TemporaryDirectory() as directory:
 
     # perform the installation
     log('info', 'installing Chrome')
-    if (os == "Darwin"):
+    if (clientos == "Darwin"):
         log('debug', 'installing ' + str(filePath))
         subprocess.run([installer, '-pkg', filePath, '-target', '/'])
-    elif (os == "Windows"):
+    elif (clientos == "Windows"):
         log('debug', 'unzipping ' + str(filePath) + ' to ' + str(directory))
         ZipFile(filePath).extractall(directory)
         installPath = Path(str(directory) + '/Installers')
