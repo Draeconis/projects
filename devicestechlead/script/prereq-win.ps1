@@ -3,9 +3,9 @@ $exeFile = "python.exe"
 $exeFilePath = "$env:appdata\$exeFile"
 
 if($is_64bit -eq $true) {
-  $url = ("https://www.python.org/ftp/python/3.9.2/python-3.9.2-amd64.exe")
+  $url = ("https://www.python.org/ftp/python/3.9.4/python-3.9.4-amd64.exe")
 } else {
-  $url = ("https://www.python.org/ftp/python/3.9.2/python-3.9.2.exe")
+  $url = ("https://www.python.org/ftp/python/3.9.4/python-3.9.4.exe")
 }
 
 Invoke-WebRequest -Uri $url -OutFile $exeFilePath
