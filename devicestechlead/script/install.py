@@ -130,5 +130,5 @@ with tempfile.TemporaryDirectory() as directory:
         postInstallAction = subprocess.Popen([electronApp, 'view=postinstall'])
         sleep(10)
         postInstallAction.terminate()
-        log('info', 'done!')
+    log('info', 'done!')
 exit()
