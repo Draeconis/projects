@@ -42,7 +42,7 @@ if (global.passedargs['view'] == "main"){
 
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 }
 
 // const targetFile = global.passedargs['outputpath'];
