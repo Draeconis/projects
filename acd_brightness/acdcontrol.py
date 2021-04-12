@@ -1,6 +1,9 @@
-import usb.core, usb.util, sys, array, logging
+# inspired by acdcontrol                - https://github.com/taylor/acdcontrol
+# requires PyUSB                        - https://github.com/pyusb/pyusb
+# good tutorial here                    - https://github.com/pyusb/pyusb/blob/master/docs/tutorial.rst
+# pulled raw USB data using USBlyser    - https://www.usblyzer.com
 
-sys.argv
+import usb.core, usb.util, sys, array, logging
 
 Apple = 0x05ac
 AppleCinemaDisplay = 0x9226
@@ -28,20 +31,20 @@ print("reading current brightness value")
 # wIndex = 0x0000
 # wLength = 0x0009
 currentState = dev.ctrl_transfer(0xA1, 0x01, 0x0310, 0x0000, 0x0009)
-brightness = (currentState[1] + (currentState[2] * 255))
+brightness = (currentState[1] + (currentState[2] * 256))
 
 print("Current brightness value is " + str(brightness))
 
 newState = (brightness + int(sys.argv[1]))
-if (newState > 1019):
-    newState = 1019
+if (newState > 1023):
+    newState = 1023
 elif (newState < 0):
     newState = 0
 
 print("New brightness value is " + str(newState))
 
-multiplier = int(newState / 255)
-remainder = (newState - (multiplier * 255))
+multiplier = int(newState / 256)
+remainder = (newState - (multiplier * 256))
 
 print("output to ACD will be '16, " + str(remainder) + ", " + str(multiplier) + "'")
 
