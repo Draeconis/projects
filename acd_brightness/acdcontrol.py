@@ -3,7 +3,7 @@
 # good tutorial here                    - https://github.com/pyusb/pyusb/blob/master/docs/tutorial.rst
 # pulled raw USB data using USBlyser    - https://www.usblyzer.com
 
-import usb.core, usb.util, sys, array, logging
+import usb.core, usb.util, sys, array
 
 Apple = 0x05ac
 AppleCinemaDisplay = 0x9226
